@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getAllMovies, getMovie, getAllMoviesWithRatings } = require('../../models/movie');
+const { getAllMovies, getMovie, getAllMoviesWithRatings, updateMovie, deleteMovie} = require('../../models/movie');
 const sendJSONresp = (req, res) => res.json(res.rows);
+const sendOKresp = (req, res) => res.status(204).send();
 // handle all the routes
 
 // get all movies
@@ -11,8 +12,11 @@ router.route('/')
 
 // get movie by ID
 router.route('/:id')
-  .get(getMovie, sendJSONresp);
+  .get(getMovie, sendJSONresp)
+  .put(updateMovie, sendOKresp)
+  .delete(deleteMovie, sendOKresp);
 // Get movies withrating BONUS
+
 
 // Get single movie
 

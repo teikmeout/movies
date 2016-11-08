@@ -30,7 +30,11 @@ function getMovie(req, res, next) {
   req.body.movieID = Number.parseInt(req.params.id)
   console.log(`value for req.body.movieID sanitation is = ${req.body.movieID}`);
   //db.many//db.one//db.none//db.anyd//db.oneOrNone//db.manyOrNone
-  db.one(`SELECT * FROM movies WHERE id = $/id/`, req.params)
+  db.one(`
+    SELECT *
+    FROM movies
+    WHERE id = $/id/
+    `, req.params)
     .then((data) => {
       // equivalent to toArray in MongoDB
       res.rows = data;
@@ -44,11 +48,40 @@ function getMovie(req, res, next) {
 
 function updateMovie(req, res, next) {
   // implement update
-  console.log('---> inside getMovie by ID');
+  console.log('---> inside updateMovie');
+  // changing Toy Story
+  console.log(`id = ${req.params.id} || title = ${req.body.title}`);
+  req.body.id = Number.parseInt(req.params.id);
+  // let newTitle = req.params.title;
+  // console.log(`id:${searchID}, title:${newTitle}`);
+  db.none(`
+    UPDATE movies
+    SET title = $/title/
+    WHERE id = $/id/
+    `,
+    req.body)
+    .then((data) => {
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    })
 }
 
-function deletemovie(req, res, next) {
-// implement delete
+function deleteMovie(req, res, next) {
+  // implement delete
+  console.log('---> inside deleteMovie');
+  req.body.id = Number.parseInt(req.params.id);
+  db.none(`
+    DELETE FROM movies
+    WHERE id = $/id/
+    `, req.body)
+    .then((data) => {
+      next();
+    })
+    .catch((err) => {
+      next(err)
+    })
 }
 
 // BONUS
@@ -60,6 +93,6 @@ module.exports = {
   getAllMovies,
   getMovie,
   updateMovie,
-  deletemovie,
+  deleteMovie,
   getAllMoviesWithRatings
 };

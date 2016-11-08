@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 // This will parse our payload from fetch which is sent as a JSON object
 app.use(bodyParser.json());
 
+// this intercepts the home route and takes it to render index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
